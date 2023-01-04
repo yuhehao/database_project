@@ -1,5 +1,6 @@
 # %matplotlib inline
-from itertools import permutations
+from itertools import combinations, permutations
+from multiprocessing import Process
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +8,7 @@ import sklearn
 import math
 import pickle
 from scipy import sparse
-
+import threading
 
 # load the data from a pickle file
 with open("data/train_data.pickle", "rb") as f:
@@ -57,12 +58,17 @@ def use_one_hot_encoding_on_each_piar(data, cols):
 relation_list = ["Problem Unit", "Problem Section", "Problem Name", "Step Name", "Anon Student Id"]
 total = []
 for l in range(1,1+len(relation_list)):
-    for i in permutations(relation_list, l):
+    for i in combinations(relation_list, l):
         total.append(i)
+        # total.append(list(combinations(relation_list, l)))
+print("ok")
 features = []
 for i in total:
+    print("o")
     features.append(use_one_hot_encoding_on_each_piar(data, i))
-with open("data/features.pickle", "wb") as f:
+    print("k")
+
+with open("features/features.pickle", "wb") as f:
     pickle.dump(features, f)
 # https://blog.csdn.net/u014281392/article/details/89525026  about spark random forest
 # # Problem Unit

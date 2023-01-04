@@ -33,10 +33,10 @@ print("data has been ready!")
 
 # ML
 # logistic regression
-# from sklearn.linear_model import LogisticRegression
-# lr_model = LogisticRegression(solver="liblinear", n_jobs=-16, max_iter=1000) # Enable all CPUs
-# lr_model.fit(X, Y)
-# print(type(lr_model))
+from sklearn.linear_model import LogisticRegression
+lr_model = LogisticRegression(solver="liblinear", n_jobs=-16, max_iter=1000) # Enable all CPUs
+lr_model.fit(X, Y)
+print(type(lr_model))
 # from pyspark.ml.classification import LogisticRegression
 # lr = LogisticRegression(labelCol="Correct First Attempt", maxIter=10).fit(X)
 # lr_pred = lr.transform(Y)
@@ -58,10 +58,10 @@ from pyspark.sql import SQLContext
 # sqlContest = SQLContext(sc)
 # df = sqlContest.createDataFrame(X)
 # print(type(df))
-from pyspark.ml.classification import RandomForestClassifier,LogisticRegression, DecisionTreeClassifier
-rf = RandomForestClassifier(labelCol="Correct First Attempt", numTrees=50, maxDepth=6).fit(X)
-rf_pred = rf.transform(Y)
-print(rf_pred)
+# from pyspark.ml.classification import RandomForestClassifier,LogisticRegression, DecisionTreeClassifier
+# rf = RandomForestClassifier(labelCol="Correct First Attempt", numTrees=50, maxDepth=6).fit(X)
+# rf_pred = rf.transform(Y)
+# print(rf_pred)
 
 
 
@@ -77,14 +77,14 @@ def RMSE(P, Y):
 
 # P = rf.predict_proba(X)[:, 1]
 # P_ = rf.predict_proba(X_)[:, 1]
-# P = lr_model.predict_proba(X)[:, 1]
-# P_ = lr_model.predict_proba(X_)[:, 1]
+P = lr_model.predict_proba(X)[:, 1]
+P_ = lr_model.predict_proba(X_)[:, 1]
 
-# print("lenP_:",len(P_))
-# print("lenY_:",len(Y_))
+print("lenP_:",len(P_))
+print("lenY_:",len(Y_))
 
-# print("Train Error:", RMSE(P, Y))
-# print("Test Error:", RMSE(P_, Y_))
+print("Train Error:", RMSE(P, Y))
+print("Test Error:", RMSE(P_, Y_))
 # Generate submission
 # RES = P_[np.isnan(Y_)]
 # test_data.loc[np.isnan(test_data["Correct First Attempt"]), "Correct First Attempt"] = RES

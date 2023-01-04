@@ -49,11 +49,12 @@ opp_features = data.apply(norm_opportunity, axis=1)
 numerical_features = pd.concat((pv_features, opp_features), axis=1)
 features = []
 
-features_name_list = [ "pu_features", "ps_features", "sn_features", "sid_features", "sid_pu_features", "pu_ps_features", "ps_pn_features", "pn_sn_features", "sid_pn_ps_features", "pu_ps_pn_features", "ps_pn_sn_features", "sid_pu_ps_pn_features", "pu_ps_pn_sn_features", "sid_ps_features", "sid_pn_features", "sid_sn_features", "sid_pu_ps_pn_sn_features"]
-for feature_name in features_name_list:
-    filename = "features/" + feature_name + ".pickle"
-    with open(filename, "rb") as f:
-        features.append(pickle.load(f))
+# features_name_list = [ "pu_features", "ps_features", "sn_features", "sid_features", "sid_pu_features", "pu_ps_features", "ps_pn_features", "pn_sn_features", "sid_pn_ps_features", "pu_ps_pn_features", "ps_pn_sn_features", "sid_pu_ps_pn_features", "pu_ps_pn_sn_features", "sid_ps_features", "sid_pn_features", "sid_sn_features", "sid_pu_ps_pn_sn_features"]
+# for feature_name in features_name_list:
+#     filename = "features/" + feature_name + ".pickle"
+with open("features/features.pickle", "rb") as f:
+    features = pickle.load(f)
+print("ok")
 features.append(kc_features)
 features.append(numerical_features)
 
