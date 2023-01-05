@@ -1,4 +1,3 @@
-# %matplotlib inline
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,24 +12,22 @@ with open("data/test_data.pickle", "rb") as f:
     test_data = pickle.load(f)
 with open("data/data.pickle", "rb") as f:
     data = pickle.load(f)
-# KC##**##
+    
+# KC
 def get_kc_dummies(row, headers, col):
     tokens = row[col].split("~~")
     opps = np.asarray([int(s) if s.lower() != "nan" or s.lower() != "none" else 0 for s in row["Opportunity(Default)"].split("~~")])
     opps = np.log(opps + 1) # log (1 + x)
     sr = pd.Series(np.zeros(len(headers)), index = headers)
     sr[tokens] = opps
-    # return sr.to_frame().to_sparse(fill_value=0)
     return sr.astype(pd.SparseDtype(int, fill_value=0))
-compound_KCs = set(data["KC(Default)"])
-print("KC(Default) has %d compound values." % len(compound_KCs))
+
 KCs = set()
-for s in compound_KCs:
+# merge
+for s in set(data["KC(Default)"]):
     KCs = KCs.union(set(s.split("~~")))
 
-# print("There are %d atomic KCs, so we will be adding as many columns to this dataframe" % len(KCs))
-
-# Cast and split columns
+# split columns
 kc_features = data.apply(get_kc_dummies, axis=1, result_type="expand", args=(KCs, "KC(Default)"))
 
 # Numerical features
@@ -54,10 +51,11 @@ features = []
 #     filename = "features/" + feature_name + ".pickle"
 with open("features/features.pickle", "rb") as f:
     features = pickle.load(f)
-print("ok")
+
 features.append(kc_features)
 features.append(numerical_features)
 
+# concat data frames and to sparse matrix to save memory and dump
 aggdf = sparse.hstack([f.astype(pd.SparseDtype(int, fill_value=0)).sparse.to_coo().tocsr() for f in features], format="csr", dtype=float)
 with open("data/aggdf.pickle", "wb") as f:
         pickle.dump(aggdf, f)
