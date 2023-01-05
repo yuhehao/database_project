@@ -1,4 +1,3 @@
-# %matplotlib inline
 from itertools import combinations, permutations
 from multiprocessing import Process
 import pandas as pd
