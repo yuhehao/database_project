@@ -16,7 +16,7 @@ with open("data/data.pickle", "rb") as f:
 # KC##**##
 def get_kc_dummies(row, headers, col):
     tokens = row[col].split("~~")
-    opps = np.asarray([int(s) if s.lower() != "nan" else 0 for s in row["Opportunity(Default)"].split("~~")])
+    opps = np.asarray([int(s) if s.lower() != "nan" or s.lower() != "none" else 0 for s in row["Opportunity(Default)"].split("~~")])
     opps = np.log(opps + 1) # log (1 + x)
     sr = pd.Series(np.zeros(len(headers)), index = headers)
     sr[tokens] = opps
