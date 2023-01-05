@@ -74,18 +74,30 @@ Explore the given dataset, report your findings about the dataset. You should no
 \textcolor{cyan}{Instruction: \\
 Some people treat data cleaning as a part of feature engineering, however we separate them here to make your work clearer. In this section, you should mainly deal with the missing values and the outliers. You can also do some data normalization here.}\\\\
 \textbf{Your work below:}\\
+First, we check the missing values of some feature to do special process in the following feature engineering. We most care about these columns "Problem Unit", "Problem Hierarchy", "Step Name", "Anon Student Id" which is the kernel of "Correct First Attempt" and these columns do not have any "nan".\\
+Second, the unique of each line may influence the "Correct First Attempt" so we should delete the duplicate lines, but in fact it is so small effects and there are not many same lines. In other way, the more a line appears, the higher weights it has, which is very reasonable.\\
 \section{Feature engineering}
 \textcolor{cyan}{Instruction: \\
 In this section, you should select a subset of features and transform them into a data matrix which can be feed into the learning model you choose. Report your work with reasons.}\\\\
 \textbf{Your work below:}\\
+We select these "Problem Unit", "Problem Hierarchy", "Step Name", "Anon Student Id" features as a subset of features.In this part, we will numerical these features. For "Problem Hierarchy", we divided it into two components: "Problem Section" and "Problem Name".\\
+We use sparse matrix to save memory and acculate the speed of data loading in each parts. For these feature, we use one hot encoding to encode these features. We get different combinations of these features and join them together for each time we do one hot encoding each of these features or two, three,four ,even five of them which composed a unit can be considered as a individual variable.In this way, we can easy process the relation about this features about different weights and even some of groups maybe useless.\\
+Then we add "KC(Default)" and "Opportunity(Default)" to features matrix which we do not use one hot encoding. Without simply encoding them, we consider the data details and separate them by "$~~$"(bolangxian), and we use $\log (x+1)$ nonlinear scaling methods.\\
+(if the word is to little add a table like it here is  oK.)
 \section{Learning algorithm}
-\textcolor{cyan}{Instruction: \\
+  \textcolor{cyan}{Instruction: \\
 In this section, you should describe the learning algorithm you choose and state the reasons why you choose it.}\\\\
 \textbf{Your work below:}\\
-
+In this section, we use logistic regression to do the prediction. We use the logistic regression because it is a simple and effective model. It is easy to implement and it is easy to understand. It is also a good model to do the binary classification.\\ 
+And we use random forest to do the prediction. We use the random forest because it is a simple and effective model. It is easy to implement and it is easy to understand. It is also a good model to do the binary classification.It has been used in the chapion paper.KDD2010.\\
+consider our environment, we use the random forests to do final prediction and compute the MSE.\\
 \section{Hyperparameter selection and model performance}
 \textcolor{cyan}{Instruction: \\
 In this section, you should describe the way you choose the hyperparameters of your model, also compare the performance of the model with your chosen hyperparamters with models with sub-optimal hyperparameters}\\\\
 \textbf{Your work below:}\\
+For random forest , we only consider these two hyperparameters:
+n\_estimators and max\_depth. By our program, the optimal choice is as following table.\\
 \section{PySpark implementation (optional)}
+we try to use pyspark to load data and do the prediction.if u want to use spark load data u can load "train.csv" by spark without bug and load "test.csv" with a little bug.\\
+And we can use spark to do the prediction. In main, we try to do prediction using random forest too but it has some environment wrong at first and with time limit we have not fixed environment at last but the code may be effective in main.\\
 \end{document}
