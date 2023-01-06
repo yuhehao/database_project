@@ -6,11 +6,11 @@ import math
 import pickle
 from scipy import sparse
 
-with open("data/train_data.pickle", "rb") as f:
+with open("../data/train_data.pickle", "rb") as f:
     train_data = pickle.load(f)
-with open("data/test_data.pickle", "rb") as f:
+with open("../data/test_data.pickle", "rb") as f:
     test_data = pickle.load(f)
-with open("data/data.pickle", "rb") as f:
+with open("../data/data.pickle", "rb") as f:
     data = pickle.load(f)
     
 # KC
@@ -49,7 +49,7 @@ features = []
 # features_name_list = [ "pu_features", "ps_features", "sn_features", "sid_features", "sid_pu_features", "pu_ps_features", "ps_pn_features", "pn_sn_features", "sid_pn_ps_features", "pu_ps_pn_features", "ps_pn_sn_features", "sid_pu_ps_pn_features", "pu_ps_pn_sn_features", "sid_ps_features", "sid_pn_features", "sid_sn_features", "sid_pu_ps_pn_sn_features"]
 # for feature_name in features_name_list:
 #     filename = "features/" + feature_name + ".pickle"
-with open("features/features.pickle", "rb") as f:
+with open("../features/features.pickle", "rb") as f:
     features = pickle.load(f)
 
 features.append(kc_features)
@@ -57,5 +57,5 @@ features.append(numerical_features)
 
 # concat data frames and to sparse matrix to save memory and dump
 aggdf = sparse.hstack([f.astype(pd.SparseDtype(int, fill_value=0)).sparse.to_coo().tocsr() for f in features], format="csr", dtype=float)
-with open("data/aggdf.pickle", "wb") as f:
+with open("../data/aggdf.pickle", "wb") as f:
         pickle.dump(aggdf, f)

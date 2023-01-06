@@ -10,9 +10,9 @@ from scipy import sparse
 import threading
 
 # load the data from a pickle file
-with open("data/train_data.pickle", "rb") as f:
+with open("../data/train_data.pickle", "rb") as f:
     train_data = pickle.load(f)
-with open("data/test_data.pickle", "rb") as f:
+with open("../data/test_data.pickle", "rb") as f:
     test_data = pickle.load(f)
 
 # combine the data from train and test
@@ -29,7 +29,7 @@ data['Opportunity(Default)'] = data['Opportunity(Default)'].astype(str)
 data.insert(3, "Problem Unit", data.apply(lambda row: row["Problem Hierarchy"].split(',')[0].strip(), axis=1))
 data.insert(4, "Problem Section", data.apply(lambda row: row["Problem Hierarchy"].split(',')[1].strip(), axis=1))
 
-with open("data/data.pickle", "wb") as f:
+with open("../data/data.pickle", "wb") as f:
     pickle.dump(data, f)
 
 # one hot encode the data
@@ -62,5 +62,5 @@ for i in total:
     features.append(use_one_hot_encoding_on_each_piar(data, i))
     # print("k")
 
-with open("features/features.pickle", "wb") as f:
+with open("../features/features.pickle", "wb") as f:
     pickle.dump(features, f)
